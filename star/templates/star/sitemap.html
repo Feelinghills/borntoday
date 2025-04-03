@@ -1,0 +1,23 @@
+{% extends 'star/base.html' %}
+
+{% block title %}Карта сайта{% endblock %}
+
+{% block content %}
+    <div class="sitemap-container">
+        <h1>Карта сайта</h1>
+        
+        {% if stars %}
+            <ul class="stars-list">
+                {% for star in stars %}
+                    <li>
+                        <a href="{% url 'star_detail' star.slug %}">{{ star.name }}</a>
+                    </li>
+                {% empty %}
+                    <p>Звезды не найдены</p>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Звезды не найдены</p>
+        {% endif %}
+    </div>
+{% endblock %}
