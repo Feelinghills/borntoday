@@ -1,0 +1,23 @@
+.alphabet-nav {
+    margin: 20px 0;
+}
+
+.alphabet-nav a, .alphabet-nav span {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #666;
+}
+
+.active-letter {
+    color: #000;
+}
+
+.current-letter {
+    color: #000;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.inactive-letter {
+    color: #ccc;
+}

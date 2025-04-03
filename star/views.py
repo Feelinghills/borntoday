@@ -152,15 +152,44 @@ def add_star(request):
 
 
 def sitemap(request):
-    # Получаем все опубликованные звезды, сортируем по имени
     stars = Star.objects.filter(is_published=True).order_by('name')
+    alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
 
-    # Формируем контекст с необходимыми данными
+    # Получаем буквы, на которые есть звезды
+    active_letters = set()
+    for star in stars:
+        active_letters.add(star.name[0].upper())
+
     context = {
         'stars': stars,
+        'alphabet': alphabet,
+        'active_letters': active_letters,
         'star_countries': Country.objects.all(),
         'star_categories': Category.objects.all(),
     }
-
-    # Рендерим шаблон с контекстом
     return render(request, 'star/sitemap.html', context)
+
+
+def sitemap_letter(request, letter):
+    letter = letter.upper()
+    stars = Star.objects.filter(
+        is_published=True,
+        name__istartswith=letter
+    ).order_by('name')
+
+    alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    active_letters = set(
+        Star.objects.filter(is_published=True)
+        .values_list('name__0', flat=True)
+        .distinct()
+    )
+
+    context = {
+        'stars': stars,
+        'alphabet': alphabet,
+        'active_letters': active_letters,
+        'current_letter': letter,
+        'star_countries': Star.objects.values('country').distinct(),
+        'star_categories': Star.objects.values('category').distinct(),
+    }
+    return render(request, 'star/sitemap_letter.html', context)

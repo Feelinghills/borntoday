@@ -1,15 +1,18 @@
 {% extends 'star/base.html' %}
 
-{% block title %}Карта сайта{% endblock %}
+{% block title %}Карта сайта - {{ current_letter }}{% endblock %}
 
 {% block content %}
     <div class="sitemap-container">
-        <h1>Карта сайта</h1>
-        
+        <h1>Карта сайта - Знаменитости на букву {{ current_letter }}</h1>
+
         <div class="alphabet-nav">
             {% for letter in alphabet %}
                 {% if letter in active_letters %}
-                    <a href="{% url 'sitemap_letter' letter %}" class="active-letter">{{ letter }}</a>
+                    <a href="{% url 'sitemap_letter' letter %}"
+                       class="{% if letter == current_letter %}current-letter{% else %}active-letter{% endif %}">
+                        {{ letter }}
+                    </a>
                 {% else %}
                     <span class="inactive-letter">{{ letter }}</span>
                 {% endif %}
@@ -23,11 +26,11 @@
                         <a href="{% url 'star_detail' star.slug %}">{{ star.name }}</a>
                     </li>
                 {% empty %}
-                    <p>Звезды не найдены</p>
+                    <p>Звезды на букву {{ current_letter }} не найдены</p>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>Звезды не найдены</p>
+            <p>Звезды на букву {{ current_letter }} не найдены</p>
         {% endif %}
     </div>
 {% endblock %}
